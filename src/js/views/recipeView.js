@@ -1,4 +1,5 @@
 import icons from "url:../../img/icons.svg";
+import { Fraction } from "fractional";
 
 class RecipeView {
 
@@ -91,20 +92,7 @@ class RecipeView {
         <h2 class="heading--2">Recipe ingredients</h2>
         <ul class="recipe__ingredient-list">
 
-        ${this._data.ingredients.map(ing => {
-            return `
-            <li class="recipe__ingredient">
-            <svg class="recipe__icon">
-                <use href="${icons}#icon-check"></use>
-            </svg>
-            <div class="recipe__quantity">${ing.quantity}</div>
-                <div class="recipe__description">
-                <span class="recipe__unit">${ing.unit}</span>
-                ${ing.description}
-                </div>
-            </li>   
-        `
-        }).join(" ")}
+        ${this._data.ingredients.map(this._generateMarkupIngredient).join(" ")}
         </ul>
         </div>
 
@@ -128,6 +116,21 @@ class RecipeView {
         </div>  
     `;
 
+    }
+
+    _generateMarkupIngredient(ing) {
+        return `
+            <li class="recipe__ingredient">
+            <svg class="recipe__icon">
+                <use href="${icons}#icon-check"></use>
+            </svg>
+            <div class="recipe__quantity">${ing.quantity ? new Fraction(ing.quantity).toString() : ""}</div>
+                <div class="recipe__description">
+                <span class="recipe__unit">${ing.unit}</span>
+                ${ing.description}
+                </div>
+            </li>   
+        `
     }
 
 };
